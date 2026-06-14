@@ -450,51 +450,200 @@
         </div>
     </section>
 
+<!-- TRƯNG BÀY SẢN PHẨM PHÂN TAB (TỰ ĐỘNG) -->
     <section id="sanpham" class="section-padding product-section">
         <div class="section-title">
             <h2>Sản Phẩm Nổi Bật</h2>
             <p>Lựa chọn danh mục sản phẩm tươi ngon chế biến sẵn hàng ngày</p>
         </div>
         
+        <!-- Các nút bấm phân loại (Tab) -->
         <div class="tab-container">
-            <button class="tab-btn active">Tất cả sản phẩm</button>
-            <button class="tab-btn">Dê Tươi Nguyên Con</button>
-            <button class="tab-btn">Thịt Sơ Chế Fillet</button>
-            <button class="tab-btn">Món Chế Biến Sẵn</button>
+            <button class="tab-btn active" onclick="filterProducts('all')">Tất cả sản phẩm</button>
+            <button class="tab-btn" onclick="filterProducts('tuoi-song')">Thịt Tươi Sống</button>
+            <button class="tab-btn" onclick="filterProducts('so-che')">Thịt Sơ Chế</button>
+            <button class="tab-btn" onclick="filterProducts('che-bien')">Món Chế Biến Sẵn</button>
         </div>
 
-        <div class="product-grid">
-            <div class="product-card">
-                <div class="product-img p-bg-1">Đùi Dê Tươi Loại 1</div>
-                <div class="product-info">
-                    <h4>Đùi Dê Tươi Filet</h4>
-                    <div class="product-price">280.000 đ / kg</div>
-                </div>
+        <!-- Khung chứa sản phẩm (Sẽ được JavaScript tự động đổ dữ liệu vào) -->
+        <div class="product-grid" id="productGrid"></div>
+    </section>
+
+    <!-- SCRIPT QUẢN LÝ DỮ LIỆU VÀ ĐỔ ẢNH TỰ ĐỘNG -->
+    <script>
+        // 1. Nơi quản lý toàn bộ sản phẩm của trại (Dễ dàng thêm/sửa/xóa ở đây)
+        const productsData = [
+            {
+                id: 1,
+                name: "Đùi Dê Tươi Filet",
+                category: "tuoi-song",
+                price: "280.000 đ / kg",
+                image: "static/products/dui-de.jpg" // Đường dẫn tới folder ảnh sạch sẽ
+            },
+            {
+                id: 2,
+                name: "Sườn Cọng Dê Thượng Hạng",
+                category: "tuoi-song",
+                price: "310.000 đ / kg",
+                image: "static/products/suon-cong.jpg"
+            },
+            {
+                id: 3,
+                name: "Lòng Dê tươi",
+                category: "so-che",
+                price: "190.000 đ / bộ",
+                image: "static/products/long-de.jpg"
+            },
+            {
+                id: 4,
+                name: "Dê làm sẵn nguyên con",
+                category: "che-bien",
+                price: "350.000 đ / kg",
+                image: "static/products/chebien.jpg"
+            }
+        ];
+
+        // 2. Hàm hiển thị sản phẩm ra màn hình
+        function displayProducts(productsList) {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = ""; // Xóa dữ liệu cũ trước khi nạp mới
+
+            if(productsList.length === 0) {
+                grid.innerHTML = `<p style="text-align:center; grid-column: 1/-1; color: #64748b;">Sản phẩm đang được cập nhật...</p>`;
+                return;
+            }
+
+            productsList.forEach(product => {
+                const cardHTML = `
+                    <div class="product-card">
+                        <!-- Sử dụng thẻ img trực tiếp lấy từ thư mục riêng -->
+                        <div class="product-img-container">
+                            <img src="${product.image}" alt="${product.name}" class="p-img-element" onerror="this.src='https://placehold.co/400x300?text=De+Dong+Nai'">
+                        </div>
+                        <div class="product-info">
+                            <h4>${product.name}</h4>
+                            <div class="product-price">${product.price}</div>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += cardHTML;
+            });
+        }
+
+        // 3. Hàm lọc sản phẩm khi nhấn vào các Tab
+        function filterProducts(category) {
+            // Đổi trạng thái Active của các nút bấm
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Lọc dữ liệu
+            if (category === 'all') {
+                displayProducts(productsData);
+            } else {
+                const filtered = productsData.filter(p => p.category === category);
+                displayProducts(filtered);
+            }
+        }
+
+        // 4. Chạy mặc định hiển thị tất cả sản phẩm khi vừa tải trang xong
+        window.onload = function() {
+            displayProducts(productsData);
+        };
+    </script>
+
+    <!-- Thêm một chút CSS bổ sung để ảnh hiển thị chuẩn khung tỉ lệ -->
+    <style>
+        .product-img-container {
+            width: 100%;
+            height: 200px; /* Khóa cứng chiều cao khung ảnh để các card đều tăm tắp */
+            overflow: hidden;
+            background-color: #f1f5f9;
+        }
+        .p-img-element {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Giúp ảnh tự co giãn đầy khung mà không bao giờ bị méo hay giãn hình */
+            transition: transform 0.5s ease;
+        }
+        .product-card:hover .p-img-element {
+            transform: scale(1.08); /* Hiệu ứng zoom nhẹ khi rê chuột vào nhìn rất cao cấp */
+        }
+    </style>
+	<!-- KHỐI THƯ VIỆN ẢNH TRẠI NUÔI -->
+    <section class="section-padding" style="background-color: #ffffff;">
+        <div class="section-title">
+            <h2>Hình Ảnh Thực Tế Từ Trang Trại</h2>
+            <p>Cận cảnh quy trình chăn nuôi tự nhiên rộng lớn gần 10 năm kinh nghiệm tại Đồng Nai</p>
+        </div>
+        
+        <!-- Lưới hiển thị 3 hình ảnh song song -->
+        <div class="farm-gallery-grid">
+            <div class="gallery-item">
+                <img src="static/farm/hinh-trai-1.jpg" alt="Khu chuồng trại dê">
+                <div class="gallery-caption">Khu chuồng trại thông thoáng</div>
             </div>
-            <div class="product-card">
-                <div class="product-img p-bg-2">Sườn Cọng Dê</div>
-                <div class="product-info">
-                    <h4>Sườn Cọng Dê Thượng Hạng</h4>
-                    <div class="product-price">310.000 đ / kg</div>
-                </div>
+            <div class="gallery-item">
+                <img src="static/farm/hinh-trai-2.jpg" alt="Thức ăn hữu cơ cho dê">
+                <div class="gallery-caption">Quy trình chăn nuôi khép kín</div>
             </div>
-            <div class="product-card">
-                <div class="product-img p-bg-1">Thịt Lòng Dê</div>
-                <div class="product-info">
-                    <h4>Mộc Lòng Dê Cuộn Thảo Mộc</h4>
-                    <div class="product-price">190.000 đ / bộ</div>
-                </div>
+            <div class="gallery-item">
+                <img src="static/farm/hinh-trai-3.jpg" alt="Đàn dê chuẩn gốc Đồng Nai">
+                <div class="gallery-caption">Kiểm định sức khỏe định kỳ</div>
             </div>
-            <div class="product-card">
-                <div class="product-img p-bg-2">Dê Ủ Trấu</div>
-                <div class="product-info">
-                    <h4>Dê Ủ Trấu Nguyên Bản</h4>
-                    <div class="product-price">350.000 đ / kg</div>
-                </div>
+			<div class="gallery-item">
+                <img src="static/farm/hinh-trai-4.jpg" alt="Đàn dê khỏe mạnh">
+                <div class="gallery-caption">Đàn dê khỏe mạnh</div>
             </div>
+			
         </div>
     </section>
 
+    <!-- Thêm CSS cho khối Gallery này vào phần <style> của anh -->
+    <style>
+        .farm-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        .gallery-item {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            height: 250px; /* Chiều cao ảnh chuồng trại */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        /* Hiệu ứng chữ đè lên ảnh khi rê chuột vào nhìn rất nghệ thuật */
+        .gallery-caption {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: #ffffff;
+            padding: 15px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-align: center;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+        /* Tự động chuyển thành 1 cột dọc thẳng hàng khi xem trên điện thoại */
+        @media (max-width: 768px) {
+            .farm-gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .gallery-item {
+                height: 200px;
+            }
+        }
+    </style>
     <section class="section-padding">
         <div class="features-grid">
             <div class="features-left">
@@ -540,9 +689,9 @@
             <div class="footer-col">
                 <h4>TRẠI DÊ TƯƠI ĐỒNG NAI</h4>
                 <p><i class="fa-solid fa-building-user"></i> Công ty TNHH Thực Phẩm Dê Đồng Nai</p>
-                <p><i class="fa-solid fa-location-arrow"></i> Văn phòng điều hành: Biên Hòa, Đồng Nai.</p>
-                <p><i class="fa-solid fa-phone-volume"></i> Hotline đặt hàng: 0935 XX XX XX</p>
-                <p><i class="fa-solid fa-envelope"></i> Email: info.dedongnai@gmail.com</p>
+                <p><i class="fa-solid fa-location-arrow"></i> Đường Nam Hoà, xã Bình Minh Tp Đồng Nai</p>
+                <p><i class="fa-solid fa-phone-volume"></i> Hotline đặt hàng: 0989 962 916</p>
+                <p><i class="fa-solid fa-envelope"></i> Email: hoangluc2012@gmail.com</p>
             </div>
             <div class="footer-col">
                 <h4>Hệ Thống Link</h4>
