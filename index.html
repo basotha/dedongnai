@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dê Tươi Đồng Nai - Hệ Thống Trại Dê Cung Cấp Sỉ & Lẻ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2e7d32;   /* Xanh lá cây thương hiệu thực phẩm sạch */
+            --secondary-color: #e65100; /* Màu cam đất ấm áp, ẩm thực */
+            --gold-color: #f59e0b;      /* Vàng nhấn cho danh hiệu */
+            --dark-color: #1e293b;      /* Chữ chính */
+            --light-bg: #f8fafc;        /* Nền nhạt */
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--white);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        /* --- 1. HEADER & NAVIGATION (Thanh Menu giống ảnh mẫu) --- */
+        .top-bar {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 8px 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+        }
+        .top-bar .info span { margin-right: 15px; }
+
+        header {
+            background: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 1.5rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span { color: var(--secondary-color); }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .btn-contact {
+            background: var(--secondary-color);
+            color: var(--white);
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: transform 0.3s, background 0.3s;
+        }
+        .btn-contact:hover {
+            background: #cc4400;
+            transform: translateY(-2px);
+        }
+
+        /* --- 2. HERO BANNER (Khối chính giới thiệu vị ngon) --- */
+        .hero {
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.08) 0%, rgba(230, 81, 0, 0.04) 100%);
+            padding: 5rem 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: z-index 2;
+        }
+
+        .hero h2 {
+            font-size: 1.25rem;
+            color: var(--secondary-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            color: var(--primary-color);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #475569;
+            margin-bottom: 2rem;
+        }
+
+        /* --- 3. QUY TRÌNH KHÉP KÍN (Khối giới thiệu Trại chăn nuôi từ khâu nuôi -> khách hàng) --- */
+        .section-padding {
+            padding: 5rem 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.25rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 80px; height: 3px;
+            background: var(--secondary-color);
+        }
+
+        .section-title p {
+            color: #64748b;
+            margin-top: 10px;
+        }
+
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .process-card {
+            background: var(--light-bg);
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .process-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+            border-color: var(--primary-color);
+        }
+
+        .process-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .process-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+
+        /* --- 4. TRƯNG BÀY SẢN PHẨM PHÂN TAB (Giống hệt bộ nút bộ lọc ảnh mẫu) --- */
+        .product-section {
+            background: var(--light-bg);
+        }
+
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 25px;
+            border: 1px solid #cbd5e1;
+            background: var(--white);
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--dark-color);
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--secondary-color);
+            color: var(--white);
+            border-color: var(--secondary-color);
+            box-shadow: 0 4px 12px rgba(230, 81, 0, 0.2);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: scale(1.03);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 180px;
+            background-color: #cbd5e1; /* Placeholder ảnh */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Giả lập màu ảnh nền đại diện */
+        .p-bg-1 { background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=400'); }
+        .p-bg-2 { background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('https://images.unsplash.com/photo-1603048588665-791ca8aea617?q=80&w=400'); }
+
+        .product-info {
+            padding: 1.25rem;
+            text-align: center;
+        }
+
+        .product-info h4 {
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+            color: var(--dark-color);
+        }
+
+        .product-price {
+            color: var(--secondary-color);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        /* --- 5. TẠI SAO CHỌN CHÚNG TÔI (Khối cam kết 4 tiêu chí như mẫu) --- */
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .features-left {
+            background: linear-gradient(rgba(46, 125, 50, 0.85), rgba(46, 125, 50, 0.85)), url('https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?q=80&w=400');
+            background-size: cover;
+            padding: 3rem 2rem;
+            border-radius: 24px;
+            color: var(--white);
+            text-align: center;
+        }
+
+        .features-left h3 { font-size: 1.8rem; margin-bottom: 1rem; }
+
+        .features-right {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 15px;
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 16px;
+        }
+
+        .feature-icon {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-top: 3px;
+        }
+
+        .feature-text h4 { margin-bottom: 5px; color: var(--dark-color); }
+        .feature-text p { font-size: 0.85rem; color: #64748b; }
+
+        /* --- 6. FOOTER (Khối thông tin doanh nghiệp & Bản đồ liên hệ) --- */
+        footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 4rem 1.5rem 2rem;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 2fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h4 {
+            color: var(--white);
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .footer-col p { font-size: 0.9rem; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .footer-col i { color: var(--primary-color); }
+
+        .map-placeholder {
+            width: 100%; height: 180px;
+            background: #1e293b; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid #334155; color: #475569;
+        }
+
+        .copyright {
+            text-align: center;
+            border-top: 1px solid #1e293b;
+            padding-top: 1.5rem;
+            font-size: 0.85rem;
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 992px) {
+            .process-grid, .features-grid, .features-right, .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 { font-size: 2.3rem; }
+            .navbar { flex-direction: column; gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="info">
+            <span><i class="fa-solid fa-clock"></i> Mở cửa: 06:00 - 21:00</span>
+            <span><i class="fa-solid fa-location-dot"></i> Trại nuôi: Long Khánh, Đồng Nai</span>
+        </div>
+        <div class="phone"><strong>Hotline: 0935 XX XX XX</strong></div>
+    </div>
+
+    <header>
+        <nav class="navbar">
+            <a href="#" class="logo">DÊ TƯƠI <span>ĐỒNG NAI</span></a>
+            <ul class="nav-links">
+                <li><a href="#trangchu">Trang Chủ</a></li>
+                <li><a href="#gioithieu">Quy Trình Trại Nuôi</a></li>
+                <li><a href="#sanpham">Sản Phẩm</a></li>
+                <li><a href="#lienhe">Liên Hệ</a></li>
+            </ul>
+            <a href="tel:0935xxxxxx" class="btn-contact"><i class="fa-solid fa-phone"></i> Gọi Ngay</a>
+        </nav>
+    </header>
+
+    <section id="trangchu" class="hero">
+        <div class="hero-content">
+            <h2>Kinh Nghiệm Gần 10 Năm Chăn Nuôi</h2>
+            <h1>Hương Vị Dê Tươi Thượng Hạng Gốc Đồng Nai</h1>
+            <p>Hệ thống trang trại chăn nuôi tự nhiên quy mô lớn, quy trình giết mổ khép kín đạt chuẩn an toàn vệ sinh thực phẩm, giao tận tay người tiêu dùng và các nhà hàng trong ngày.</p>
+            <a href="#sanpham" class="btn-contact" style="padding: 12px 30px; font-size: 1rem;">Xem Danh Sách Sản Phẩm</a>
+        </div>
+    </section>
+
+    <section id="gioithieu" class="section-padding">
+        <div class="section-title">
+            <h2>Hành Trình Khép Kín Tới Tay Khách Hàng</h2>
+            <p>Chúng tôi tự hào làm chủ hoàn toàn chuỗi cung ứng thực phẩm sạch từ trang trại tại Đồng Nai</p>
+        </div>
+        <div class="process-grid">
+            <div class="process-card">
+                <div class="process-icon"><i class="fa-solid fa-wheat-straw"></i></div>
+                <h3>1. Chăn Nuôi Tự Nhiên</h3>
+                <p>Đàn dê được nuôi tại thung lũng cỏ sạch Đồng Nai, nguồn thức ăn hữu cơ tự nhiên giúp thịt săn chắc, thơm ngọt, không mỡ thừa.</p>
+            </div>
+            <div class="process-card">
+                <div class="process-icon"><i class="fa-solid fa-utensils"></i></div>
+                <h3>2. Chế Biến Sạch Sẽ</h3>
+                <p>Khu vực kiểm soát và sơ chế đạt chuẩn ISO, lọc thịt tươi sống, đóng gói hút chân không cách ly vi khuẩn hoàn toàn.</p>
+            </div>
+            <div class="process-card">
+                <div class="process-icon"><i class="fa-solid fa-truck-fast"></i></div>
+                <h3>3. Giao Hàng Tốc Độ</h3>
+                <p>Vận chuyển bằng xe chuyên dụng giữ mát, cam kết thịt dê tươi rói tới các quán ăn, nhà hàng, hộ gia đình chỉ trong vài giờ.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="sanpham" class="section-padding product-section">
+        <div class="section-title">
+            <h2>Sản Phẩm Nổi Bật</h2>
+            <p>Lựa chọn danh mục sản phẩm tươi ngon chế biến sẵn hàng ngày</p>
+        </div>
+        
+        <div class="tab-container">
+            <button class="tab-btn active">Tất cả sản phẩm</button>
+            <button class="tab-btn">Dê Tươi Nguyên Con</button>
+            <button class="tab-btn">Thịt Sơ Chế Fillet</button>
+            <button class="tab-btn">Món Chế Biến Sẵn</button>
+        </div>
+
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="product-img p-bg-1">Đùi Dê Tươi Loại 1</div>
+                <div class="product-info">
+                    <h4>Đùi Dê Tươi Filet</h4>
+                    <div class="product-price">280.000 đ / kg</div>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-img p-bg-2">Sườn Cọng Dê</div>
+                <div class="product-info">
+                    <h4>Sườn Cọng Dê Thượng Hạng</h4>
+                    <div class="product-price">310.000 đ / kg</div>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-img p-bg-1">Thịt Lòng Dê</div>
+                <div class="product-info">
+                    <h4>Mộc Lòng Dê Cuộn Thảo Mộc</h4>
+                    <div class="product-price">190.000 đ / bộ</div>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-img p-bg-2">Dê Ủ Trấu</div>
+                <div class="product-info">
+                    <h4>Dê Ủ Trấu Nguyên Bản</h4>
+                    <div class="product-price">350.000 đ / kg</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding">
+        <div class="features-grid">
+            <div class="features-left">
+                <h3>100% Sạch Từ Tâm</h3>
+                <p>Nói không với chất tăng trọng, cam kết chất lượng chuẩn thịt dê Đồng Nai chính gốc thơm ngon nhất thị trường.</p>
+            </div>
+            <div class="features-right">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="feature-text">
+                        <h4>Kiểm Định Nghiêm Ngặt</h4>
+                        <p>Đầy đủ giấy tờ chứng nhận an toàn thực phẩm của Chi cục Thú y.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fa-solid fa-leaf"></i></div>
+                    <div class="feature-text">
+                        <h4>Hữu Cơ Thảo Mộc</h4>
+                        <p>Thức ăn bổ sung lá cây tự nhiên giúp loại bỏ mùi hôi đặc trưng của thịt dê.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fa-solid fa-award"></i></div>
+                    <div class="feature-text">
+                        <h4>10 Năm Uy Tín</h4>
+                        <p>Đối tác phân phối tin cậy cho hàng trăm nhà hàng, quán lẩu dê khắp miền Nam.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                    <div class="feature-text">
+                        <h4>Giá Gốc Tại Trại</h4>
+                        <p>Cung cấp tận nguồn không qua trung gian, mang lại mức giá tốt nhất cho đối tác kinh doanh.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="lienhe"></section>
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>TRẠI DÊ TƯƠI ĐỒNG NAI</h4>
+                <p><i class="fa-solid fa-building-user"></i> Công ty TNHH Thực Phẩm Dê Đồng Nai</p>
+                <p><i class="fa-solid fa-location-arrow"></i> Văn phòng điều hành: Biên Hòa, Đồng Nai.</p>
+                <p><i class="fa-solid fa-phone-volume"></i> Hotline đặt hàng: 0935 XX XX XX</p>
+                <p><i class="fa-solid fa-envelope"></i> Email: info.dedongnai@gmail.com</p>
+            </div>
+            <div class="footer-col">
+                <h4>Hệ Thống Link</h4>
+                <p><a href="#trangchu" style="color: #94a3b8; text-decoration:none;">Về đầu trang</a></p>
+                <p><a href="#gioithieu" style="color: #94a3b8; text-decoration:none;">Quy trình chăn nuôi</a></p>
+                <p><a href="#sanpham" style="color: #94a3b8; text-decoration:none;">Danh mục sản phẩm</a></p>
+            </div>
+            <div class="footer-col">
+                <h4>Bản Đồ Chỉ Đường Đường Đi</h4>
+                <div class="map-placeholder">
+                    <p><i class="fa-solid fa-map-location-dot"></i> [Bản đồ Google Maps Vị Trí Trại Dê]</p>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2026 DeDongNai.top. Bảo lưu mọi quyền thương hiệu sạch.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
